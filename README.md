@@ -1,2 +1,38 @@
-# Windows-Server-2025-Enterprise-Lad
-Comprehensive documentation for Windows Server 2025 lab setup and domain join.
+# 🖥️ Windows Server 2025 Enterprise Lab Setup
+
+دليل عملي وتوثيق شامل لبناء بيئة شبكة افتراضية متكاملة باستخدام Windows Server 2025 ونظام Windows 11 Client.
+
+## 📌 1. مواصفات بيئة العمل (Lab Environment)
+* **برنامج التجهيز الوهمي:** Oracle VM VirtualBox
+* **مواصفات السيرفر (Windows Server 2025):**
+  * **اسم الجهاز:** DC2025
+  * **الذاكرة (RAM):** 3099 MB
+  * **العنوان الثابت (Static IP):** 192.168.1.10
+  * **اسم الدومين (Domain Name):** Saud.local
+* **مواصفات العميل (Windows 11 Pro):**
+  * **اسم الجهاز:** Saodx
+  * **الذاكرة (RAM):** 2048 MB
+  * **العنوان (IP):** 192.168.1.20
+
+## 🛠️ 2. خطوات التأسيس من البداية (Step-by-Step Setup)
+
+### المرحلة الأولى: التثبيت وإدارة الموارد
+1. إنشاء الأجهزة الافتراضية على VirtualBox وضبط موارد الذاكرة لتفادي تعليق النظام.
+2. تثبيت نظام Windows Server 2025 وتعيين كلمة مرور حساب المسؤول (Administrator).
+3. تثبيت نظام Windows 11 Pro على الجهاز الافتراضي الثاني.
+
+### المرحلة الثانية: إعداد الشبكة وخدمات الدومين (AD DS & DNS)
+1. ضبط عنوان IP ثابت للسيرفر (`192.168.1.10`) وتوجيه الـ DNS.
+2. إضافة وترقية السيرفر ليصبح Domain Controller والدومين باسم `Saud.local`.
+3. فحص واستقرار خدمة الـ DNS للرد على طلبات الأجهزة.
+
+### المرحلة الثالثة: ربط جهاز العميل بالدومين (Domain Join)
+1. ضبط إعدادات كارت الشبكة على جهاز Windows 11 لتوجيه الـ DNS نحو السيرفر.
+2. التحقق من الاتصال عبر موجه الأوامر `ping 192.168.1.10`.
+3. الانضمام إلى الدومين `Saud.local` واستخدام حساب `SAUD\Administrator`.
+4. إعادة تشغيل الجهاز واستكمال الدمج بنجاح (`Welcome to the Saud.local domain`).
+
+## 🚀 3. المهام القادمة (Upcoming Roadmap)
+- [ ] إنشاء إدارة الحسابات والهيكل التنظيمي (OU & Users) عبر Active Directory.
+- [ ] إعداد وتفعيل توزيع العناوين التلقائي (DHCP Scope).
+- [ ] تطبيق سياسات الأمان والمجموعات (Group Policy Objects - GPO).
