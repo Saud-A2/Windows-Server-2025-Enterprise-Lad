@@ -39,8 +39,7 @@ This repository details the end-to-end deployment, configuration, and management
 * Installed Windows Server 2025 (Desktop Experience) on `DC2025`.
 * Configured Guest Additions for full-screen integration.
 
-![VirtualBox Environment Setup](01-virtualbox-env.png)
-
+![VirtualBox Environment Setup](01-virtualbox-env.png.png)
 ---
 
 ### Phase 2: Core Server & Network Configuration / إعدادات السيرفر والشبكة
@@ -55,8 +54,7 @@ This repository details the end-to-end deployment, configuration, and management
 * Promoted server to Domain Controller for new forest **`saud.local`**.
 * Created Organizational Unit (OU) structure: `SAUD-HQ` -> `IT`, `HR`, `Finance`.
 
-![Active Directory Infrastructure](03-ad-users-ous.png)
-
+![Active Directory Infrastructure](03-ad-users-ous.png.png)
 ---
 
 ## 👤 Author / منفذ المشروع
