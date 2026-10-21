@@ -12,64 +12,54 @@
 **English:**  
 This repository details the end-to-end deployment, configuration, and management of a virtualized enterprise IT infrastructure. The setup features a **Windows Server 2025** Primary Domain Controller (DC) providing core network identity and services (AD DS, DNS, DHCP, GPO) and a **Windows 11 Pro** client endpoint joined to the domain.
 
-**بالعربية:**  
-يوثق هذا المستودع خطوات الإنشاء والتكوين والإدارة الكاملة لبنية تحتية افتراضية تقاس على بيئات الشركات. يتضمن اللاب خادم **Windows Server 2025** كـ (Primary Domain Controller) يقدم خدمات الهوية والشبكة الأساسية (AD DS, DNS, DHCP, Group Policy) مع ربط جهاز عميل **Windows 11 Pro** بالنطاق لاختبار السياسات والاتصال.
+**عربي:**  
+يوثق هذا المستودع خطوات إنشاء وتكوين وإدارة البنية التحتية الافتراضية الكاملة لشبكات الشركات. يتضمن المختبر خادم **Windows Server 2025** كـ (Primary Domain Controller) لإدارة الهوية والخدمات الأساسية، بالإضافة إلى جهاز عميل **Windows 11 Pro** منضم للمجال.
 
 ---
 
-## 📐 2. Architecture & Topologies / المخطط الفني للشبكة
+## 🛠️ 2. Environment Architecture / معماريّة البيئة الوهمية
 
-| Item / العنصر | Domain Controller (DC) | Client Endpoint |
-| :--- | :--- | :--- |
-| **Hostname / اسم الجهاز** | `DC2025` | `WIN11-CL01` |
-| **Operating System / نظام التشغيل** | Windows Server 2025 Datacenter | Windows 11 Pro |
-| **Role / الدور** | AD DS, DNS, DHCP, GPO Server | Domain Joined Workstation |
-| **IP Addressing / عنوان الـ IP** | `192.168.10.10 /24` (Static) | `DHCP Allocated` |
-| **DNS Server** | `127.0.0.1` (Self) | `192.168.10.10` |
-| **Domain Name / اسم المجال** | `saud.local` | `saud.local` |
+* **Host Machine:** Lenovo ThinkPad T14 (Windows 11 Home)
+* **Hypervisor:** Oracle VirtualBox
+* **Internal Network:** `LabNet` (Isolated Virtual Network)
 
----
+### 🖥️ Virtual Machines Specifications
 
-## 🚀 3. Step-by-Step Implementation / خطوات التنفيذ التفصيلية
-
-### Phase 1: Virtualization & Base Installation / المرحلة الأولى: البيئة الافتراضية والتثبيت
-* **Hypervisor Setup:** Configured VirtualBox Internal Network (`LabNet`) to isolate traffic.
-* **Server Deployment:** Installed Windows Server 2025 (Desktop Experience).
-* **Initial Configurations:**
-  * Renamed computer to `DC2025`.
-  * Assigned Static IP (`192.168.10.10/24`) and configured loopback DNS.
+| Machine Name | Role | OS Version | IP Address | Subnet Mask | Preferred DNS |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **`DC2025`** | Primary Domain Controller | Windows Server 2025 | `192.168.10.10` | `255.255.255.0` | `127.0.0.1` |
+| **`CL01-Saud`** | Domain Client Endpoint | Windows 11 Pro | DHCP (`192.168.10.50+`) | `255.255.255.0` | `192.168.10.10` |
 
 ---
 
-### Phase 2: Active Directory & Core Services / المرحلة الثانية: ترقية السيرفر والخدمات الأساسية
-* **AD DS Role:** Installed Active Directory Domain Services role via Server Manager.
-* **Forest Deployment:** Promoted server to Domain Controller for new forest `saud.local`.
-* **DNS Configuration:** Verified Forward & Reverse Lookup Zones.
-* **DHCP Scope Setup:** Created DHCP Scope (`192.168.10.50` - `192.168.10.150`) with Router option (`192.168.10.1`) and DNS option (`192.168.10.10`).
+## 📸 3. Implementation Phases & Proof of Concept / مراحل التنفيذ والتوثيق
+
+### Phase 1: Lab Virtualization & Base Installation / مرحلة بناء البيئة الوهمية
+* Configured VirtualBox Internal Network (`LabNet`) to isolate traffic.
+* Installed Windows Server 2025 (Desktop Experience) on `DC2025`.
+* Configured Guest Additions for full-screen integration.
+
+![VirtualBox Environment Setup](01-virtualbox-env.png)
 
 ---
 
-### Phase 3: Active Directory Infrastructure & OUs / المرحلة الثالثة: الهيكل التنظيمي والمدراء
-* Created Organizational Unit (OU) structure:
-  * `SAUD-HQ`
-    * `OUs`: `IT`, `HR`, `Finance`, `Operations`
-    * `Groups`: `GRP_IT_Admins`, `GRP_HR_Users`
-* Provisioned domain users and assigned appropriate RBAC security permissions.
+### Phase 2: Core Server & Network Configuration / إعدادات السيرفر والشبكة
+* Renamed server hostname to `DC2025`.
+* Configured static IP configuration (`192.168.10.10/24`).
+
+![Local Server Configuration](02-local-server.png)
 
 ---
 
-### Phase 4: Endpoint Join & Verification / المرحلة الرابعة: ربط جهاز العميل والتحقق
-* Deployed Windows 11 Pro virtual machine on `LabNet`.
-* Joined `WIN11-CL01` to `saud.local` domain using domain credentials.
-* Verified RSAT connection and successful DHCP IP lease acquisition.
+### Phase 3: Active Directory Domain Services & OUs / إعداد الدومين والـ OUs
+* Promoted server to Domain Controller for new forest **`saud.local`**.
+* Created Organizational Unit (OU) structure: `SAUD-HQ` -> `IT`, `HR`, `Finance`.
+
+![Active Directory Infrastructure](03-ad-users-ous.png)
 
 ---
 
-## 🛠️ 4. Key Skills Demonstrated / المهارات التقنية المكتسبة
+## 👤 Author / منفذ المشروع
 
-* **System Administration:** Windows Server 2025 Deployment, Active Directory Architecture, Domain Services Management.
-* **Network Infrastructure:** Static/Dynamic IP Routing, DHCP Scope Design, DNS Resolution.
-* **Endpoint Management:** Domain Join Procedures, Workstation Troubleshooting.
-* **Documentation & Governance:** Professional IT Lab Documentation, Network Mapping.
-
----
+**Saud Al-Ziyadi**  
+*Computer Technical Support Specialist*
