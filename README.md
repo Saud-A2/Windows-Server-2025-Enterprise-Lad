@@ -1,38 +1,75 @@
-# 🖥️ Windows Server 2025 Enterprise Lab Setup
+# 🖥️ Enterprise Infrastructure Lab: Windows Server 2025 & Active Directory
 
-دليل عملي وتوثيق شامل لبناء بيئة شبكة افتراضية متكاملة باستخدام Windows Server 2025 ونظام Windows 11 Client.
+![Platform](https://img.shields.io/badge/Hypervisor-Oracle%20VM%20VirtualBox-blue)
+![OS](https://img.shields.io/badge/Server%20OS-Windows%20Server%202025-green)
+![Client OS](https://img.shields.io/badge/Client%20OS-Windows%2011%20Pro-0078D4)
+![Status](https://img.shields.io/badge/Lab%20Status-Completed-brightgreen)
 
-## 📌 1. مواصفات بيئة العمل (Lab Environment)
-* **برنامج التجهيز الوهمي:** Oracle VM VirtualBox
-* **مواصفات السيرفر (Windows Server 2025):**
-  * **اسم الجهاز:** DC2025
-  * **الذاكرة (RAM):** 3099 MB
-  * **العنوان الثابت (Static IP):** 192.168.1.10
-  * **اسم الدومين (Domain Name):** Saud.local
-* **مواصفات العميل (Windows 11 Pro):**
-  * **اسم الجهاز:** Saodx
-  * **الذاكرة (RAM):** 2048 MB
-  * **العنوان (IP):** 192.168.1.20
+---
 
-## 🛠️ 2. خطوات التأسيس من البداية (Step-by-Step Setup)
+## 📌 1. Executive Summary / الملخص التنفيذي
 
-### المرحلة الأولى: التثبيت وإدارة الموارد
-1. إنشاء الأجهزة الافتراضية على VirtualBox وضبط موارد الذاكرة لتفادي تعليق النظام.
-2. تثبيت نظام Windows Server 2025 وتعيين كلمة مرور حساب المسؤول (Administrator).
-3. تثبيت نظام Windows 11 Pro على الجهاز الافتراضي الثاني.
+**English:**  
+This repository details the end-to-end deployment, configuration, and management of a virtualized enterprise IT infrastructure. The setup features a **Windows Server 2025** Primary Domain Controller (DC) providing core network identity and services (AD DS, DNS, DHCP, GPO) and a **Windows 11 Pro** client endpoint joined to the domain.
 
-### المرحلة الثانية: إعداد الشبكة وخدمات الدومين (AD DS & DNS)
-1. ضبط عنوان IP ثابت للسيرفر (`192.168.1.10`) وتوجيه الـ DNS.
-2. إضافة وترقية السيرفر ليصبح Domain Controller والدومين باسم `Saud.local`.
-3. فحص واستقرار خدمة الـ DNS للرد على طلبات الأجهزة.
+**بالعربية:**  
+يوثق هذا المستودع خطوات الإنشاء والتكوين والإدارة الكاملة لبنية تحتية افتراضية تقاس على بيئات الشركات. يتضمن اللاب خادم **Windows Server 2025** كـ (Primary Domain Controller) يقدم خدمات الهوية والشبكة الأساسية (AD DS, DNS, DHCP, Group Policy) مع ربط جهاز عميل **Windows 11 Pro** بالنطاق لاختبار السياسات والاتصال.
 
-### المرحلة الثالثة: ربط جهاز العميل بالدومين (Domain Join)
-1. ضبط إعدادات كارت الشبكة على جهاز Windows 11 لتوجيه الـ DNS نحو السيرفر.
-2. التحقق من الاتصال عبر موجه الأوامر `ping 192.168.1.10`.
-3. الانضمام إلى الدومين `Saud.local` واستخدام حساب `SAUD\Administrator`.
-4. إعادة تشغيل الجهاز واستكمال الدمج بنجاح (`Welcome to the Saud.local domain`).
+---
 
-## 🚀 3. المهام القادمة (Upcoming Roadmap)
-- [ ] إنشاء إدارة الحسابات والهيكل التنظيمي (OU & Users) عبر Active Directory.
-- [ ] إعداد وتفعيل توزيع العناوين التلقائي (DHCP Scope).
-- [ ] تطبيق سياسات الأمان والمجموعات (Group Policy Objects - GPO).
+## 📐 2. Architecture & Topologies / المخطط الفني للشبكة
+
+| Item / العنصر | Domain Controller (DC) | Client Endpoint |
+| :--- | :--- | :--- |
+| **Hostname / اسم الجهاز** | `DC2025` | `WIN11-CL01` |
+| **Operating System / نظام التشغيل** | Windows Server 2025 Datacenter | Windows 11 Pro |
+| **Role / الدور** | AD DS, DNS, DHCP, GPO Server | Domain Joined Workstation |
+| **IP Addressing / عنوان الـ IP** | `192.168.10.10 /24` (Static) | `DHCP Allocated` |
+| **DNS Server** | `127.0.0.1` (Self) | `192.168.10.10` |
+| **Domain Name / اسم المجال** | `saud.local` | `saud.local` |
+
+---
+
+## 🚀 3. Step-by-Step Implementation / خطوات التنفيذ التفصيلية
+
+### Phase 1: Virtualization & Base Installation / المرحلة الأولى: البيئة الافتراضية والتثبيت
+* **Hypervisor Setup:** Configured VirtualBox Internal Network (`LabNet`) to isolate traffic.
+* **Server Deployment:** Installed Windows Server 2025 (Desktop Experience).
+* **Initial Configurations:**
+  * Renamed computer to `DC2025`.
+  * Assigned Static IP (`192.168.10.10/24`) and configured loopback DNS.
+
+---
+
+### Phase 2: Active Directory & Core Services / المرحلة الثانية: ترقية السيرفر والخدمات الأساسية
+* **AD DS Role:** Installed Active Directory Domain Services role via Server Manager.
+* **Forest Deployment:** Promoted server to Domain Controller for new forest `saud.local`.
+* **DNS Configuration:** Verified Forward & Reverse Lookup Zones.
+* **DHCP Scope Setup:** Created DHCP Scope (`192.168.10.50` - `192.168.10.150`) with Router option (`192.168.10.1`) and DNS option (`192.168.10.10`).
+
+---
+
+### Phase 3: Active Directory Infrastructure & OUs / المرحلة الثالثة: الهيكل التنظيمي والمدراء
+* Created Organizational Unit (OU) structure:
+  * `SAUD-HQ`
+    * `OUs`: `IT`, `HR`, `Finance`, `Operations`
+    * `Groups`: `GRP_IT_Admins`, `GRP_HR_Users`
+* Provisioned domain users and assigned appropriate RBAC security permissions.
+
+---
+
+### Phase 4: Endpoint Join & Verification / المرحلة الرابعة: ربط جهاز العميل والتحقق
+* Deployed Windows 11 Pro virtual machine on `LabNet`.
+* Joined `WIN11-CL01` to `saud.local` domain using domain credentials.
+* Verified RSAT connection and successful DHCP IP lease acquisition.
+
+---
+
+## 🛠️ 4. Key Skills Demonstrated / المهارات التقنية المكتسبة
+
+* **System Administration:** Windows Server 2025 Deployment, Active Directory Architecture, Domain Services Management.
+* **Network Infrastructure:** Static/Dynamic IP Routing, DHCP Scope Design, DNS Resolution.
+* **Endpoint Management:** Domain Join Procedures, Workstation Troubleshooting.
+* **Documentation & Governance:** Professional IT Lab Documentation, Network Mapping.
+
+---
