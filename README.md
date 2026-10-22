@@ -1,63 +1,63 @@
-# 🖥️ Enterprise Infrastructure Lab: Windows Server 2025 & Active Directory
+# Windows Server 2025 Enterprise Lab Setup & Domain Join
 
-![Platform](https://img.shields.io/badge/Hypervisor-Oracle%20VM%20VirtualBox-blue)
-![OS](https://img.shields.io/badge/Server%20OS-Windows%20Server%202025-green)
-![Client OS](https://img.shields.io/badge/Client%20OS-Windows%2011%20Pro-0078D4)
-![Status](https://img.shields.io/badge/Lab%20Status-Completed-brightgreen)
+## 📌 Project Overview
+This repository documents the end-to-end setup and configuration of an enterprise-grade Virtual Machine environment using **Oracle VirtualBox**. The lab demonstrates full infrastructure setup including active directory domain service installation, domain controller promotion, network interface configuration, client domain joining, and domain user authentication testing.
 
 ---
 
-## 📌 1. Executive Summary / الملخص التنفيذي
-
-**English:**  
-This repository details the end-to-end deployment, configuration, and management of a virtualized enterprise IT infrastructure. The setup features a **Windows Server 2025** Primary Domain Controller (DC) providing core network identity and services (AD DS, DNS, DHCP, GPO) and a **Windows 11 Pro** client endpoint joined to the domain.
-
-**عربي:**  
-يوثق هذا المستودع خطوات إنشاء وتكوين وإدارة البنية التحتية الافتراضية الكاملة لشبكات الشركات. يتضمن المختبر خادم **Windows Server 2025** كـ (Primary Domain Controller) لإدارة الهوية والخدمات الأساسية، بالإضافة إلى جهاز عميل **Windows 11 Pro** منضم للمجال.
-
----
-
-## 🛠️ 2. Environment Architecture / معماريّة البيئة الوهمية
-
-* **Host Machine:** Lenovo ThinkPad T14 (Windows 11 Home)
-* **Hypervisor:** Oracle VirtualBox
-* **Internal Network:** `LabNet` (Isolated Virtual Network)
-
-### 🖥️ Virtual Machines Specifications
-
-| Machine Name | Role | OS Version | IP Address | Subnet Mask | Preferred DNS |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **`DC2025`** | Primary Domain Controller | Windows Server 2025 | `192.168.10.10` | `255.255.255.0` | `127.0.0.1` |
-| **`CL01-Saud`** | Domain Client Endpoint | Windows 11 Pro | DHCP (`192.168.10.50+`) | `255.255.255.0` | `192.168.10.10` |
+## 🛠️ Lab Environment & Components
+* **Virtualization:** Oracle VM VirtualBox
+* **Domain Controller (DC):** Windows Server 2025 (`DC2025`)
+* **Client Workstation:** Windows 11 Enterprise (`Windows Client Saud`)
+* **Domain Name:** `saud.local`
+* **Static IP Address:** `192.168.10.10/24`
 
 ---
 
-## 📸 3. Implementation Phases & Proof of Concept / مراحل التنفيذ والتوثيق
+## 🚀 Phases & Documentation
 
-### Phase 1: Lab Virtualization & Base Installation / مرحلة بناء البيئة الوهمية
-* Configured VirtualBox Internal Network (`LabNet`) to isolate traffic.
-* Installed Windows Server 2025 (Desktop Experience) on `DC2025`.
-* Configured Guest Additions for full-screen integration.
+### Phase 1: VirtualBox Environment Setup
+* Created dedicated virtual machines for Windows Server 2025 and Windows 11 Client.
+* Configured Internal Network adapter settings to allow secure inter-VM communication.
 
-![VirtualBox Environment Setup](01-virtualbox-env.png.png)
+![VirtualBox Environment Setup](01-virtualbox-env.png)
+
 ---
 
-### Phase 2: Core Server & Network Configuration / إعدادات السيرفر والشبكة
+### Phase 2: Core Server & Network Configuration
 * Renamed server hostname to `DC2025`.
-* Configured static IP configuration (`192.168.10.10/24`).
+* Configured static IP configuration (`192.168.10.10/24`) and DNS server settings.
 
 ![Local Server Configuration](02-local-server.png)
 
 ---
 
-### Phase 3: Active Directory Domain Services & OUs / إعداد الدومين والـ OUs
-* Promoted server to Domain Controller for new forest **`saud.local`**.
-* Created Organizational Unit (OU) structure: `SAUD-HQ` -> `IT`, `HR`, `Finance`.
+### Phase 3: Active Directory Domain Services & Organizational Units
+* Installed Active Directory Domain Services (AD DS) role.
+* Promoted server to Domain Controller for new forest `saud.local`.
+* Created Organizational Unit (OU) structure and domain user accounts (`Saud-IT`).
 
 ![Active Directory Infrastructure](03-ad-users-ous.png.png)
+
 ---
 
-## 👤 Author / منفذ المشروع
+### Phase 4: Client Domain Join Verification
+* Configured Windows 11 client DNS settings pointing to `192.168.10.10`.
+* Joined the Windows 11 client machine to `saud.local` domain successfully.
 
-**Saud Al-Ziyadi**  
-*Computer Technical Support Specialist*
+![Domain Joined Confirmation](domain-joined.04.png)
+
+---
+
+### Phase 5: Domain User Logon & Authentication Verification
+* Verified Active Directory domain login using created domain user credentials (`Saud-IT`).
+* Authenticated successfully on the client machine against the domain controller.
+
+![Domain User Logon Prompt](domain-user-login-05.png)
+![Successful Domain User Desktop Session](domain-user-desktop.06.png)
+
+---
+
+## 👤 Author
+* **Saud Al-Ziyadi**
+* Computer Technical Support Specialist
