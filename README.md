@@ -1,48 +1,93 @@
-# 🚀 Windows Server 2025 Enterprise File Share & NTFS Permissions Lab
+# 🚀 Windows Server 2025 Enterprise Infrastructure, AD DS & File Sharing Lab
 
-A comprehensive hands-on implementation guide for setting up a secure enterprise File Sharing infrastructure on Windows Server 2025. This project demonstrates Active Directory integration, hybrid access control (Share & NTFS permissions), and end-to-end verification from a domain-joined client following the principle of least privilege (PoLP).
+A comprehensive hands-on implementation guide and technical documentation for setting up a full-stack Windows Server 2025 Enterprise environment. This repository demonstrates end-to-end configuration including VirtualBox internal networking, Active Directory Domain Services (AD DS), Organizational Unit (OU) structure, client domain join, Kerberos authentication, and granular SMB Share & NTFS permission management following the Principle of Least Privilege (PoLP).
 
 ---
 
 ## 📌 Project Overview
-This repository provides a practical demonstration of designing, configuring, and securing an enterprise file management environment. It covers Active Directory Domain Services (AD DS) setup, Organizational Unit (OU) structure, granular NTFS permission inheritance management, SMB network share configuration, and live access validation.
+This project provides an industry-standard portfolio entry showcasing practical system administration skills. It details the complete setup lifecycle—from initial hypervisor network isolation and core domain controller promotion to domain user logon validation and hybrid network file share security testing.
 
 ---
 
-## 🛠️ Lab Environment & Components
+## 🛠️ Lab Infrastructure & Technical Specifications
 | Component | Details |
 | :--- | :--- |
 | **Virtualization Platform** | Oracle VirtualBox |
-| **Domain Controller (DC)** | Windows Server 2025 (`DC2025.saud.local`) |
+| **Domain Controller (DC)** | Windows Server 2025 Enterprise (`DC2025.saud.local`) |
 | **Client Workstation** | Windows 11 Enterprise (`Saud A.`) |
-| **Domain Name** | `saud.local` |
-| **Target Security Group** | `IT-Group` |
-| **Network Share Path** | `\\DC2025\CompanyData\IT-Data` |
+| **Static IP Address** | `192.168.10.10/24` (Primary DNS: `192.168.10.10`) |
+| **Active Directory Domain** | `saud.local` |
+| **Security Group** | `IT-Group` |
+| **Network Share UNC Path** | `\\DC2025\CompanyData\IT-Data` |
 
 ---
 
-## 📋 Implementation & Verification Stages
+## 📋 Comprehensive Implementation & Verification Stages
 
-### Stage 1: Active Directory & Group Policy Setup
+### Stage 1: Virtualization Infrastructure & Internal Network Setup
+![VirtualBox Environment Setup](01-virtualbox-env.png)
+
+* **Technical Details:**
+  * Provisioned isolated virtual machine nodes for Windows Server 2025 and Windows 11 Enterprise using Oracle VirtualBox.
+  * Configured dedicated **Internal Network** adapters on both virtual machines to guarantee secure, isolated host-to-guest and inter-VM communication without external DHCP/DNS interference.
+
+---
+
+### Stage 2: Core Server Baseline & Static IP Binding
+![Local Server Configuration](02-local-server.png)
+
+* **Technical Details:**
+  * Configured local server identity properties by setting the hostname to `DC2025`.
+  * Assigned a static IPv4 address (`192.168.10.10/24`) and configured the loopback/primary DNS pointer to route local directory queries correctly.
+
+---
+
+### Stage 3: Active Directory Domain Services (AD DS) & OU Hierarchy
+![AD DS OUs and User Management](03-ad-users-ous.png)
+
+* **Technical Details:**
+  * Installed the AD DS role and promoted `DC2025` as the forest root Domain Controller for `saud.local`.
+  * Structured Active Directory by creating Organizational Units (OUs) for enterprise departments, provisions user accounts (`Saud A.`), and managing domain security.
+
+---
+
+### Stage 4: Role-Based Access Control & Security Group Membership
 ![Active Directory Group Membership](04-ad-group-membership.png)
 
-* **Configuration Details:**
-  * Configured Active Directory Domain Services (AD DS) on domain `saud.local`.
-  * Created dedicated Organizational Units (OUs) and initialized the `IT-Group` security group.
-  * Populated group membership with authorized domain users (`Saud A.`) to apply Role-Based Access Control (RBAC).
+* **Technical Details:**
+  * Created the `IT-Group` security group to enforce Role-Based Access Control (RBAC).
+  * Assigned domain user `Saud A.` to `IT-Group` to streamline permission assignment across shared domain resources.
 
 ---
 
-### Stage 2: SMB Share, NTFS Security & Live Access Verification
+### Stage 5: Domain Join & DNS Resolver Verification
+![Workstation Domain Join](domain-joined.04.png)
+
+* **Technical Details:**
+  * Configured client DNS settings to point to `192.168.10.10`.
+  * Executed domain join operation on the Windows 11 client machine, binding it securely to `saud.local` and validating active Domain Controller connectivity.
+
+---
+
+### Stage 6: Domain Identity Authentication & Session Logon
+![Domain User Interactive Login](domain-user-login-05.png)
+
+* **Technical Details:**
+  * Validated domain identity authentication through the Windows Interactive Logon screen on the client machine using domain credentials (`saud.local\Saud-user` / `Saud A.`).
+  * Confirmed Kerberos/NTLM authentication ticket generation and session initialization.
+
+---
+
+### Stage 7: Hybrid File Share, NTFS Security & Live Access Validation
 ![Network Access and File Creation Verification](Saud_IT_Network_Folder_Test.png)
 
-* **Configuration & Validation:**
-  1. Configured SMB Advanced Sharing on `CompanyData` with Share Permissions set to `Everyone: Full Control`.
-  2. Enforced strict **NTFS Security Permissions** on `IT-Data` by disabling inheritance and assigning `Modify / Read / Write` rights exclusively to `IT-Group`.
-  3. Accessed the share path `\\DC2025\CompanyData\IT-Data` from the Windows 11 client using domain account `Saud A.`.
-  4. Created and modified `Saud-IT.txt` with text content:  
+* **Technical Details:**
+  1. Configured SMB Advanced Sharing on directory `C:\CompanyData` with Share Permissions set to `Everyone: Full Control`.
+  2. Applied strict **NTFS Security Permissions** on sub-folder `IT-Data` by disabling permission inheritance and granting `Modify / Read / Write` rights exclusively to `IT-Group`.
+  3. Accessed shared resource via UNC path `\\DC2025\CompanyData\IT-Data` from the Windows 11 workstation as user `Saud A.`.
+  4. Created and modified `Saud-IT.txt` with verification payload:  
      `Testing Access Successful IT Department Access Ok`
-  5. Saved changes successfully without permission errors (`Access Denied`), validating 100% operational functionality.
+  5. Saved changes successfully without permission errors (`Access Denied`), validating 100% operational success for hybrid SMB and NTFS access rules.
 
 ---
 
