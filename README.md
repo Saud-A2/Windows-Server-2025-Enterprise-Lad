@@ -25,11 +25,11 @@ This project provides an industry-standard portfolio entry showcasing practical 
 ## 📋 Comprehensive Implementation & Verification Stages
 
 ### Stage 1: Virtualization Infrastructure & Internal Network Setup
-![VirtualBox Environment Setup](01-virtualbox-env.png)
+![VirtualBox Environment Setup](01-virtualbox-env.png.png)
 
 * **Technical Details:**
   * Provisioned isolated virtual machine nodes for Windows Server 2025 and Windows 11 Enterprise using Oracle VirtualBox.
-  * Configured dedicated **Internal Network** adapters on both virtual machines to guarantee secure, isolated host-to-guest and inter-VM communication without external DHCP/DNS interference.
+  * Configured dedicated **Internal Network** adapters on both virtual machines to guarantee secure, isolated host-to-guest and inter-VM communication.
 
 ---
 
@@ -38,21 +38,21 @@ This project provides an industry-standard portfolio entry showcasing practical 
 
 * **Technical Details:**
   * Configured local server identity properties by setting the hostname to `DC2025`.
-  * Assigned a static IPv4 address (`192.168.10.10/24`) and configured the loopback/primary DNS pointer to route local directory queries correctly.
+  * Assigned a static IPv4 address (`192.168.10.10/24`) and configured the primary DNS pointer to route local directory queries correctly.
 
 ---
 
 ### Stage 3: Active Directory Domain Services (AD DS) & OU Hierarchy
-![AD DS OUs and User Management](03-ad-users-ous.png)
+![AD DS OUs and User Management](03-ad-users-ous.png.png)
 
 * **Technical Details:**
-  * Installed the AD DS role and promoted `DC2025` as the forest root Domain Controller for `saud.local`.
-  * Structured Active Directory by creating Organizational Units (OUs) for enterprise departments, provisions user accounts (`Saud A.`), and managing domain security.
+  * Installed AD DS role and promoted `DC2025` as the forest root Domain Controller for `saud.local`.
+  * Structured Active Directory by creating Organizational Units (OUs) for enterprise departments, provisioning user accounts (`Saud A.`), and managing domain security.
 
 ---
 
 ### Stage 4: Role-Based Access Control & Security Group Membership
-![Active Directory Group Membership](04-ad-group-membership.png)
+![Active Directory Group Membership](04-ad-group-member..png)
 
 * **Technical Details:**
   * Created the `IT-Group` security group to enforce Role-Based Access Control (RBAC).
@@ -85,8 +85,7 @@ This project provides an industry-standard portfolio entry showcasing practical 
   1. Configured SMB Advanced Sharing on directory `C:\CompanyData` with Share Permissions set to `Everyone: Full Control`.
   2. Applied strict **NTFS Security Permissions** on sub-folder `IT-Data` by disabling permission inheritance and granting `Modify / Read / Write` rights exclusively to `IT-Group`.
   3. Accessed shared resource via UNC path `\\DC2025\CompanyData\IT-Data` from the Windows 11 workstation as user `Saud A.`.
-  4. Created and modified `Saud-IT.txt` with verification payload:  
-     `Testing Access Successful IT Department Access Ok`
+  4. Created and modified `Saud-IT.txt` with verification payload: `Testing Access Successful IT Department Access Ok`.
   5. Saved changes successfully without permission errors (`Access Denied`), validating 100% operational success for hybrid SMB and NTFS access rules.
 
 ---
@@ -94,3 +93,4 @@ This project provides an industry-standard portfolio entry showcasing practical 
 ## 👤 Author
 * **Saud Al-Ziyadi**
 * IT Computer Technical Support Specialist
+  
