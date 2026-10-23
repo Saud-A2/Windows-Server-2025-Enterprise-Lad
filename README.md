@@ -25,7 +25,7 @@ This project provides an industry-standard portfolio entry showcasing practical 
 ## 📋 Comprehensive Implementation & Verification Stages
 
 ### Stage 1: Virtualization Infrastructure & Internal Network Setup
-![VirtualBox Environment Setup](01-virtualbox-env.png)
+![VirtualBox Environment Setup](01-virtualbox-env.png.png)
 
 * **Technical Details:**
   * Provisioned isolated virtual machine nodes for Windows Server 2025 and Windows 11 Enterprise using Oracle VirtualBox.
@@ -43,7 +43,7 @@ This project provides an industry-standard portfolio entry showcasing practical 
 ---
 
 ### Stage 3: Active Directory Domain Services (AD DS) & OU Hierarchy
-![AD DS OUs and User Management](03-ad-users-ous.png)
+![AD DS OUs and User Management](03-ad-users-ous.png.png)
 
 * **Technical Details:**
   * Installed AD DS role and promoted `DC2025` as the forest root Domain Controller for `saud.local`.
@@ -52,7 +52,7 @@ This project provides an industry-standard portfolio entry showcasing practical 
 ---
 
 ### Stage 4: Role-Based Access Control & Security Group Membership
-![Active Directory Group Membership](04-ad-group-membership.png)
+![Active Directory Group Membership](04-ad-group-member..png)
 
 * **Technical Details:**
   * Created the `IT-Group` security group to enforce Role-Based Access Control (RBAC).
